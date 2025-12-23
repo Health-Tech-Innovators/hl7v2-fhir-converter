@@ -81,3 +81,19 @@ resources:
       - MSH
       - PV1
       - .IN2
+
+  # Next of Kin / Emergency Contact - MOVED TO END FOR TESTING
+  - resourceName: RelatedPerson
+    segment: NK1
+    resourcePath: resource/RelatedPerson_NK1
+    repeats: true
+    additionalSegments:
+      - MSH
+
+  # Guarantor (Financial Responsibility) - MOVED TO END FOR TESTING
+  - resourceName: RelatedPerson
+    segment: GT1
+    resourcePath: resource/RelatedPerson_GT1
+    repeats: true
+    additionalSegments:
+      - MSH
