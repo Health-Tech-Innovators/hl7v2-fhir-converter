@@ -1,0 +1,25 @@
+#
+# (C) Copyright IBM Corp. 2020, 2025
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+resourceType: RelatedPerson
+#
+# Maps NK1 (Next of Kin) segment to FHIR RelatedPerson
+#
+id:
+   type: STRING
+   valueOf: "GeneralUtils.generateResourceId()"
+   expressionType: JEXL
+
+patient:
+   valueOf: datatype/Reference
+   expressionType: resource
+   specs: $Patient
+
+# NK1.2 - Name
+name:
+   valueOf: datatype/HumanName
+   generateList: true
+   expressionType: resource
+   specs: NK1.2

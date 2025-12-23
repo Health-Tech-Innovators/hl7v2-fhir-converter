@@ -1,0 +1,25 @@
+#
+# (C) Copyright IBM Corp. 2020, 2025
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+resourceType: RelatedPerson
+#
+# Maps GT1 (Guarantor) segment to FHIR RelatedPerson
+#
+id:
+   type: STRING
+   valueOf: "GeneralUtils.generateResourceId()"
+   expressionType: JEXL
+
+patient:
+   valueOf: datatype/Reference
+   expressionType: resource
+   specs: $Patient
+
+# GT1.3 - Guarantor Name
+name:
+   valueOf: datatype/HumanName
+   generateList: true
+   expressionType: resource
+   specs: GT1.3
