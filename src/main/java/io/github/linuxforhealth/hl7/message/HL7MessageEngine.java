@@ -51,7 +51,7 @@ import io.github.linuxforhealth.hl7.util.ExpressionUtility;
 
 /**
  * Implements Message engine for HL7 message data
- * 
+ *
  *
  * @author pbhallam
  */
@@ -64,7 +64,7 @@ public class HL7MessageEngine implements MessageEngine {
     private BundleType bundleType;
 
     /**
-     * 
+     *
      * @param context Context to be used
      */
     public HL7MessageEngine(FHIRContext context) {
@@ -72,7 +72,7 @@ public class HL7MessageEngine implements MessageEngine {
     }
 
     /**
-     * 
+     *
      * @param context Context to be used
      * @param bundleType Type of bundel
      */
@@ -83,7 +83,7 @@ public class HL7MessageEngine implements MessageEngine {
 
     /**
      * Converts a HL7 message to a FHIR bundle with the list of resources specified
-     * 
+     *
      * @see io.github.linuxforhealth.api.MessageEngine#transform(io.github.linuxforhealth.api.InputDataExtractor,
      *      java.lang.Iterable, java.util.Map)
      */
@@ -107,7 +107,7 @@ public class HL7MessageEngine implements MessageEngine {
         // If it is not passed in (null), use "" (empty) to satisfy parser null checks in .yml parsing
         String zoneIdText =  getFHIRContext().getZoneIdText() != null ? getFHIRContext().getZoneIdText() : "";
         localContextValues.put("ZONEID", new SimpleEvaluationResult<String>(zoneIdText));
- 
+
         List<ResourceResult> resourceResultsWithEvalLater = new ArrayList<>();
         for (FHIRResourceTemplate genericTemplate : resources) {
             HL7FHIRResourceTemplate hl7ResourceTemplate = (HL7FHIRResourceTemplate) genericTemplate;
@@ -184,13 +184,18 @@ public class HL7MessageEngine implements MessageEngine {
         ResourceModel resourceModel = template.getResource();
         List<String> segmentGroup = template.getAttributes().getSegment().getGroup();
         String segment = template.getAttributes().getSegment().getSegment();
+        System.out.println("\n@@@ generateResources for segment: " + segment + " @@@");
         List<ResourceResult> resourceResults = null;
         List<SegmentGroup> multipleSegments = getMultipleSegments(hl7DataInput, template, segmentGroup, segment);
+        System.out.println("@@@ multipleSegments.size() = " + multipleSegments.size());
         if (!multipleSegments.isEmpty()) {
 
             resourceResults = generateMultipleResources(hl7DataInput, resourceModel, contextValues,
                     multipleSegments, template.isGenerateMultiple());
+        } else {
+            System.out.println("@@@ multipleSegments is EMPTY - no resources will be generated!");
         }
+        System.out.println("@@@ Returning " + (resourceResults == null ? "NULL" : resourceResults.size()) + " resourceResults\n");
         return resourceResults;
     }
 
@@ -268,17 +273,21 @@ public class HL7MessageEngine implements MessageEngine {
 
     private static List<SegmentGroup> getMultipleSegments(final HL7MessageData hl7DataInput,
             final HL7FHIRResourceTemplate template, List<String> segmentGroup, String segment) {
+        System.out.println("### getMultipleSegments called for segment: " + segment + ", segmentGroup: " + segmentGroup);
         List<SegmentGroup> multipleSegments;
         if (segmentGroup != null && !segmentGroup.isEmpty()) {
+            System.out.println("### Using extractSegmentGroups (has segmentGroup)");
             multipleSegments = SegmentExtractorUtil.extractSegmentGroups(segmentGroup, segment,
                     template.getAttributes().getAdditionalSegments(), hl7DataInput.getHL7DataParser(),
                     template.getAttributes().getGroup());
 
         } else {
+            System.out.println("### Using extractSegmentNonGroups (no segmentGroup)");
             multipleSegments = SegmentExtractorUtil.extractSegmentNonGroups(segment,
                     template.getAttributes().getAdditionalSegments(), hl7DataInput.getHL7DataParser());
 
         }
+        System.out.println("### getMultipleSegments returning " + multipleSegments.size() + " SegmentGroups");
         return multipleSegments;
     }
 

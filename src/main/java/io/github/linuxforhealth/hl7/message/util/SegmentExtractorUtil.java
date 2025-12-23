@@ -42,17 +42,25 @@ public class SegmentExtractorUtil {
      */
     public static List<SegmentGroup> extractSegmentNonGroups(String segment,
             List<HL7Segment> additionalSegments, HL7DataExtractor dataExtractor) {
+        System.out.println("=== EXTRACT SEGMENT NON-GROUPS: " + segment + " ===");
         LOGGER.debug("Extracting segment name {}", segment);
 
         List<SegmentGroup> returnValues = new ArrayList<>();
 
         List<Structure> segments = getStructures(segment, dataExtractor);
 
+        System.out.println("Segment " + segment + " returned " + (segments == null ? "NULL" : segments.size()) + " structures from getStructures()");
+
         if (segments != null && !segments.isEmpty()) {
+            System.out.println("SUCCESS: Segment " + segment + " has " + segments.size() + " structures, proceeding with extraction");
             Map<String, List<Structure>> additionalSegmentValues = extractAdditionalSegmentValueNonGroup(
                     additionalSegments, dataExtractor);
             returnValues.add(new SegmentGroup(segments, additionalSegmentValues));
+        } else {
+            System.out.println("FAILED: Segment " + segment + " returned empty structures - NO SegmentGroup created!");
         }
+
+        System.out.println("=== RETURNING " + returnValues.size() + " SegmentGroups for segment " + segment + " ===");
 
         return returnValues;
     }
@@ -60,13 +68,13 @@ public class SegmentExtractorUtil {
     /**
      * Returns list of segments from all the repetitions of the group with a group name included in
      * groupId
-     * 
+     *
      * @param primaryGroup Group the segment is to be extracted from
      * @param primarySegment Segment to be extracted
      * @param additionalSegments Additional segments to be tracked
      * @param dataExtractor HL7 Data extractor to use
      * @param parentGroup Parent group
-     * 
+     *
      * @return List of {@link SegmentGroup}
      */
     public static List<SegmentGroup> extractSegmentGroups(List<String> primaryGroup,
@@ -278,10 +286,16 @@ public class SegmentExtractorUtil {
 
     // HL7 segments extraction
     private static List<Structure> getStructures(String seg, HL7DataExtractor dataExtractor) {
+        System.out.println("getStructures() called for segment: " + seg);
         ParsingResult<Structure> segments = dataExtractor.getAllStructures(seg);
+        System.out.println("dataExtractor.getAllStructures(" + seg + ") returned: " +
+            (segments == null ? "NULL" : (segments.isEmpty() ? "EMPTY" : segments.getValues().size() + " structures")));
+
         if (segments == null || segments.isEmpty()) {
+            System.out.println("No structures found for segment: " + seg);
             return new ArrayList<>();
         } else {
+            System.out.println("Found " + segments.getValues().size() + " structure(s) for segment: " + seg);
             return segments.getValues();
         }
 
