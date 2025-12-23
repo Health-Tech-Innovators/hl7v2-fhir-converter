@@ -1,0 +1,111 @@
+#
+# (C) Copyright IBM Corp. 2021, 2025
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# FHIR Resources to extract from ADT_A03 message (HL7 v2.3 specific)
+#
+# This is a version-specific template for HL7 v2.3 messages.
+# For v2.3, the message structure and field definitions may differ slightly from v2.6.
+# Currently, this template is identical to the default, but can be customized for v2.3-specific needs.
+#
+---
+resources:
+  - resourceName: MessageHeader
+    segment: MSH
+    resourcePath: resource/MessageHeader
+    repeats: false
+    isReferenced: false
+    additionalSegments:
+      - EVN
+
+  - resourceName: Patient
+    segment: PID
+    resourcePath: resource/Patient
+    repeats: false
+    isReferenced: true
+    additionalSegments:
+      - PD1
+      - MSH
+      - INSURANCE.IN1
+      - INSURANCE.IN2
+
+  # Next of Kin / Emergency Contact
+  - resourceName: RelatedPerson
+    segment: NK1
+    resourcePath: resource/RelatedPerson_NK1
+    repeats: true
+    isReferenced: false
+    additionalSegments:
+      - MSH
+      - PID
+
+  - resourceName: Encounter
+    segment: PV1
+    resourcePath: resource/Encounter
+    repeats: false
+    isReferenced: true
+    additionalSegments:
+      - PV2
+      - EVN
+      - MSH
+      - DG1
+
+  - resourceName: Condition
+    segment: DG1
+    resourcePath: resource/Condition
+    isReferenced: true
+    repeats: true
+    additionalSegments:
+      - MSH
+      - PID
+      - PV1
+
+  - resourceName: Observation
+    segment: OBX
+    resourcePath: resource/Observation
+    repeats: true
+    isReferenced: true
+    additionalSegments:
+      - MSH
+
+  - resourceName: AllergyIntolerance
+    segment: AL1
+    resourcePath: resource/AllergyIntolerance
+    repeats: true
+    additionalSegments:
+      - MSH
+
+  - resourceName: Procedure
+    segment: .PR1
+    group: PROCEDURE
+    resourcePath: resource/Procedure
+    repeats: true
+    additionalSegments:
+      - .ROL
+      - MSH
+      - PID
+      - PV1
+
+  - resourceName: Coverage
+    segment: .IN1
+    group: INSURANCE
+    resourcePath: resource/Coverage
+    repeats: true
+    additionalSegments:
+      - MSH
+      - PV1
+      - .IN2
+
+  # Guarantor (Financial Responsibility)
+  - resourceName: RelatedPerson
+    segment: GT1
+    resourcePath: resource/RelatedPerson_GT1
+    repeats: true
+    isReferenced: false
+    additionalSegments:
+      - MSH
+      - PID
+      - INSURANCE.IN1
+
+
