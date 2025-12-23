@@ -26,7 +26,6 @@ import ca.uhn.hl7v2.model.Structure;
 import ca.uhn.hl7v2.model.Type;
 import ca.uhn.hl7v2.model.Unmodifiable;
 import ca.uhn.hl7v2.model.Variable;
-import ca.uhn.hl7v2.model.v26.segment.MSH;
 import ca.uhn.hl7v2.util.Terser;
 import io.github.linuxforhealth.hl7.parsing.result.Hl7ParsingStringResult;
 import io.github.linuxforhealth.hl7.parsing.result.Hl7ParsingStructureResult;
@@ -307,9 +306,12 @@ public class HL7DataExtractor {
 
     public static String getMessageType(Message message) {
         try {
-            MSH msh = (MSH) message.get("MSH");
-            return msh.getMessageType().getMsg1_MessageCode().getValue() + "_"
-                    + msh.getMessageType().getMsg2_TriggerEvent().getValue();
+            Terser terser = new Terser(message);
+            String messageCode = terser.get("/MSH-9-1");
+            String triggerEvent = terser.get("/MSH-9-2");
+            if (StringUtils.isNotBlank(messageCode) && StringUtils.isNotBlank(triggerEvent)) {
+                return messageCode + "_" + triggerEvent;
+            }
         } catch (HL7Exception e) {
             LOGGER.warn("Cannot extract actual message type.");
             LOGGER.debug("Cannot extract actual message type, reason {}", e.getMessage());
@@ -322,9 +324,37 @@ public class HL7DataExtractor {
     }
 
     /**
-     * 
+     * Extracts the HL7 version from MSH-12 field.
+     *
+     * @param message The HL7 message
+     * @return The version string (e.g., "2.3", "2.6") or "2.6" as default
+     */
+    public static String getMessageVersion(Message message) {
+        try {
+            Terser terser = new Terser(message);
+            String version = terser.get("/MSH-12");
+            if (StringUtils.isNotBlank(version)) {
+                return version;
+            }
+        } catch (HL7Exception e) {
+            LOGGER.debug("Cannot extract message version from MSH-12, using default 2.6. Reason: {}", e.getMessage());
+        }
+        return "2.6"; // Default fallback
+    }
+
+    /**
+     * Extracts the HL7 version from MSH-12 field for this message instance.
+     *
+     * @return The version string (e.g., "2.3", "2.6") or "2.6" as default
+     */
+    public String getMessageVersion() {
+        return getMessageVersion(message);
+    }
+
+    /**
+     *
      * @param segment Segment to evaluate
-     * @param field Field of segment
+     * @param field   Field of segment
      * @return {@link ParsingResult}
      */
     public ParsingResult<String> get(String segment, String field) {
