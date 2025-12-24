@@ -206,6 +206,11 @@ public class HL7ToFHIRConverter {
 
         try {
             if (hl7message != null) {
+                System.out.println("*** Parsed message class: " + hl7message.getClass().getName());
+                System.out.println("*** Message structure name: " + hl7message.getName());
+                System.out.println("*** Message version: " + hl7message.getVersion());
+                System.out.flush();
+                
                 String messageStructureInfo = hl7message.printStructure();
                 StringBuilder output = new StringBuilder();
                 String[] messageStructureInfoLines = messageStructureInfo.split(System.getProperty("line.separator"));

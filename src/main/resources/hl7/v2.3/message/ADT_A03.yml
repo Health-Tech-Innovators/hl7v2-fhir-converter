@@ -27,8 +27,8 @@ resources:
     additionalSegments:
       - PD1
       - MSH
-      - INSURANCE.IN1
-      - INSURANCE.IN2
+      - IN1
+      - IN2
 
   # Next of Kin / Emergency Contact
   - resourceName: RelatedPerson
@@ -88,24 +88,22 @@ resources:
       - PV1
 
   - resourceName: Coverage
-    segment: .IN1
-    group: INSURANCE
+    segment: IN1
     resourcePath: resource/Coverage
     repeats: true
     additionalSegments:
       - MSH
       - PV1
-      - .IN2
+      - IN2
 
   # Guarantor (Financial Responsibility)
   - resourceName: RelatedPerson
     segment: GT1
     resourcePath: resource/RelatedPerson_GT1
     repeats: true
-    isReferenced: false
     additionalSegments:
       - MSH
-      - PID
-      - INSURANCE.IN1
+      - IN1
+
 
 
