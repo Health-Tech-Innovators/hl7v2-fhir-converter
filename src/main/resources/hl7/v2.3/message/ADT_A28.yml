@@ -1,4 +1,4 @@
-# HL7 v2.3 ADT_A03 Message Template
+# HL7 v2.3 ADT_A28 Message Template
 # Generated from official HL7 XSD schema
 # Auto-generated on Fri Dec 26 16:06:41 CST 2025
 
@@ -34,8 +34,6 @@ resources:
     repeats: false
     additionalSegments:
       - MSH
-      - PD1
-      - DB1
 
   # Patient Visit/Encounter
   - resourceName: Encounter
@@ -45,12 +43,36 @@ resources:
     additionalSegments:
       - MSH
       - PV2
-      - DRG
+      - ACC
+
+  # Next of Kin / Emergency Contact
+  - resourceName: RelatedPerson
+    segment: NK1
+    resourcePath: resource/RelatedPerson_NK1
+    repeats: true
+    additionalSegments:
+      - MSH
+
+  # Allergy Information
+  - resourceName: AllergyIntolerance
+    segment: AL1
+    resourcePath: resource/AllergyIntolerance
+    repeats: true
+    additionalSegments:
+      - MSH
 
   # Diagnosis Information
   - resourceName: Condition
     segment: DG1
     resourcePath: resource/Condition
+    repeats: true
+    additionalSegments:
+      - MSH
+
+  # Procedures
+  - resourceName: Procedure
+    segment: PR1
+    resourcePath: resource/Procedure
     repeats: true
     additionalSegments:
       - MSH
@@ -63,7 +85,15 @@ resources:
     additionalSegments:
       - MSH
 
-  # Group: PROCEDURE
-  # TODO: Implement group handling for PROCEDURE
-  # Segments in group: PR1 ROL 
+  # Guarantor (Financial Responsibility)
+  - resourceName: RelatedPerson
+    segment: GT1
+    resourcePath: resource/RelatedPerson_GT1
+    repeats: true
+    additionalSegments:
+      - MSH
+
+  # Group: INSURANCE
+  # TODO: Implement group handling for INSURANCE
+  # Segments in group: IN1 IN2 IN3 
 
