@@ -63,7 +63,7 @@ public class HL7MessageModel implements MessageTemplate<Message> {
         try {
             hparser = new HL7HapiParser();
 
-            Message hl7message = hparser.getParser().parse(message);
+            Message hl7message = hparser.parseWithNormalization(message);
             Bundle bundle = convert(hl7message, engine);
             return engine.getFHIRContext().encodeResourceToString(bundle);
 
