@@ -88,11 +88,28 @@ resources:
     additionalSegments:
       - MSH
 
-  # Group: PROCEDURE
-  # TODO: Implement group handling for PROCEDURE
-  # Segments in group: PR1 ROL 
+  # Insurance Policy (in INSURANCE group)
+  - resourceName: Coverage
+    segment: .IN1
+    group: INSURANCE
+    resourcePath: resource/Coverage
+    repeats: true
+    additionalSegments:
+      - MSH
+      - PID
+      - PV1
+      - .IN2
+      - .IN3
 
-  # Group: INSURANCE
-  # TODO: Implement group handling for INSURANCE
-  # Segments in group: IN1 IN2 IN3 ROL 
+  # Procedures (in PROCEDURE group)
+  - resourceName: Procedure
+    segment: .PR1
+    group: PROCEDURE
+    resourcePath: resource/Procedure
+    repeats: true
+    additionalSegments:
+      - .ROL
+      - MSH
+      - PID
+      - PV1
 
