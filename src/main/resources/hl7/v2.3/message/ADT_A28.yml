@@ -32,6 +32,7 @@ resources:
     segment: PID
     resourcePath: resource/Patient
     repeats: false
+    isReferenced: true
     additionalSegments:
       - MSH
 
@@ -40,6 +41,7 @@ resources:
     segment: PV1
     resourcePath: resource/Encounter
     repeats: false
+    isReferenced: true
     additionalSegments:
       - MSH
       - PV2
@@ -50,6 +52,7 @@ resources:
     segment: NK1
     resourcePath: resource/RelatedPerson_NK1
     repeats: true
+    isReferenced: true
     additionalSegments:
       - MSH
 
@@ -58,6 +61,7 @@ resources:
     segment: AL1
     resourcePath: resource/AllergyIntolerance
     repeats: true
+    isReferenced: true
     additionalSegments:
       - MSH
 
@@ -66,6 +70,7 @@ resources:
     segment: DG1
     resourcePath: resource/Condition
     repeats: true
+    isReferenced: true
     additionalSegments:
       - MSH
 
@@ -74,6 +79,7 @@ resources:
     segment: PR1
     resourcePath: resource/Procedure
     repeats: true
+    isReferenced: true
     additionalSegments:
       - MSH
 
@@ -82,6 +88,7 @@ resources:
     segment: OBX
     resourcePath: resource/Observation
     repeats: true
+    isReferenced: true
     additionalSegments:
       - MSH
 
@@ -90,6 +97,7 @@ resources:
     segment: GT1
     resourcePath: resource/RelatedPerson_GT1
     repeats: true
+    isReferenced: true
     additionalSegments:
       - MSH
 

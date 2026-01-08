@@ -58,6 +58,7 @@ resources:
     segment: AL1
     resourcePath: resource/AllergyIntolerance
     repeats: true
+    isReferenced: true
     additionalSegments:
       - MSH
 
@@ -66,6 +67,7 @@ resources:
     group: PROCEDURE
     resourcePath: resource/Procedure
     repeats: true
+    isReferenced: true
     additionalSegments:
       - .ROL
       - MSH
@@ -77,6 +79,7 @@ resources:
     group: INSURANCE
     resourcePath: resource/Coverage
     repeats: true
+    isReferenced: true
     additionalSegments:
       - MSH
       - PID
